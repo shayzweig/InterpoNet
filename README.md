@@ -18,8 +18,8 @@ Installation Instructions
 3. Install all the python packages described in Requirements.txt by typing: `pip install -r Requirements.txt`
 4. Make sure to configure tensorflow to your needs (GPU usage preferred)
 5. Install the variational inference :
-  a. type: `cd SrcVariational`
-  b. type: `make` - the comilation should run without errors.
+  i. type: `cd SrcVariational`
+  ii. type: `make` - the comilation should run without errors.
 
 Test you installation by running the following command:
 `python InterpoNet.py example/frame_0001.png example/frame_0002.png example/frame_0001.dat example/frame_0001.txt example/frame_0001.flo --ba_matches_filename=example/frame_0001_BA.txt --sintel`  
@@ -40,9 +40,9 @@ The InterpoNet Pipeline
 The InterpoNet pipeline consists of the following steps:
 
 1. **Input**: example file of all the inputs is attached in the folder "example" 
-  a. two images, with the same shape.
-  b. A matching file produced by a matching algorithm. 
-  c. Edges file produced by SED. 
+  i. two images, with the same shape.
+  ii. A matching file produced by a matching algorithm. 
+  iii. Edges file produced by SED. 
 2. Downsample the inputs.   
 3. Calculate the bidirectional mean - if matching map from B to A was supplied.
 4. Predict the dense flow map using the trained model.
