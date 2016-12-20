@@ -47,7 +47,10 @@ The InterpoNet pipeline consists of the following steps:
 Usage
 -----
 To run the Interponet pipeline, use the following syntax:  
-  `python interponet.py <img1_filename> <img2_filename> <edges_filename> <matches_filename> <out_filename> [optional --model_name model_name] [optional --ba_matches_filename ba_matches_filename] [optional --img_width img_width] [optional --img_height img_height] [optional --downscale downscale] [optional --sintel]`  
+  `python interponet.py <img1_filename> <img2_filename> <edges_filename> <matches_filename> <out_filename> [optional --model_filename model_filename] [optional --ba_matches_filename ba_matches_filename] [optional --img_width img_width] [optional --img_height img_height] [optional --downscale downscale] [optional --sintel]`  
+
+example use:
+`python InterpoNet.py example/frame_0001.png example/frame_0002.png example/frame_0001.dat example/frame_0001.txt example/frame_0001.flo --ba_matches_filename=example/frame_0001_BA.txt --sintel`  
 
 Command Line Arguments
 -----------------------
@@ -60,7 +63,7 @@ matches_filename : The output of the matching algorithm given in the format:
 out_filename : The output filename
 
 optional: 
-model_name [default='models/ff_sintel.ckpt'] : The filename of the model to use.
+model_filename [default='models/ff_sintel.ckpt'] : The filename of the model to use.
 ba_matches_filename [default=None] : Matching file from second image in the pair to the first (B->A)
 img_width [default=1024] : The width of the flow map.
 img_height [default=436] : The height of the flow map.
