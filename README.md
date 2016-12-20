@@ -10,36 +10,42 @@ The code was developed on Ubuntu 14.04, using Tensorflow. You can see the perfor
 
 For now only the code for inference is uploaded, we will upload the training code soon.
 
+
 Installation Instructions
 -------------------------
-Given two images, you need first to compute edges and matches before running InterpolNet.
+1. Create a python (2.7) virtualenv, by typing: `virtualenv --no-site-packages env`
+2. Clone this repository by typing: `git clone https://github.com/shayzweig/InterpoNet`
+3. Install all the python packages described in Requirements.txt by typing: `pip install -r Requirements.txt`
+4. Make sure to configure tensorflow to your needs (GPU usage preferred)
+5. Install the variational inference :
+  5.1 type: `cd SrcVariational`
+  5.2 type: `make` - the comilation should run without errors.
+
+Test you installation by running the following command:
+`python InterpoNet.py example/frame_0001.png example/frame_0002.png example/frame_0001.dat example/frame_0001.txt example/frame_0001.flo --ba_matches_filename=example/frame_0001_BA.txt --sintel`  
+No errors should be displayed
+
+The InterpoNet Input
+-----------------------
+Given two images, you need first to compute edges and matches before running InterpoNet.
 You can download the code from these links.
 - for edges using SED:  http://research.microsoft.com/en-us/downloads/389109f6-b4e8-404c-84bf-239f7cbf4e3d/
 - that will require also Piotr Dollar's toolbox:  http://vision.ucsd.edu/~pdollar/toolbox/doc/index.html
 
 To compute the matches - you can use any matching algorithm. The best results we obtained were on [FlowFields] (https://www.dfki.de/web/research/publications?pubid=7987)
 
-1. Download and compile OpenCV 2.4.10, with python2.7 support
-2. Create a python (2.7) virtualenv, by typing: `virtualenv --no-site-packages env`
-3. Copy the cv2.so file which was generated in step 1 into `env/lib/python2.7/site-packages`
-4. Clone this repository by typing: `git clone https://github.com/shayzweig/InterpoNet`
-5. Install all the python packages described in Requirements.txt by typing: `pip install -r Requirements.txt`
-6. Make sure to configure tensorflow to your needs (GPU usage preferred)
-
-Test you installation by running the following command:
-
-
 The InterpoNet Pipeline
 -----------------------
+
 The InterpoNet pipeline consists of the following steps:
 
 1. **Input**: example file of all the inputs is attached in the folder "example" 
   1.1 two images, with the same shape.
   1.2 A matching file produced by a matching algorithm. 
-  1.3 Edges file produced by SED.
+  1.3 Edges file produced by SED. 
 2. Downsample the inputs.   
 3. Calculate the bidirectional mean - if matching map from B to A was supplied.
-4. Predict the dense flow map using the trauned model.
+4. Predict the dense flow map using the trained model.
 5. Upsampe back to the original size.
 6. Post process using variational energy minimiation.
 7. **Outputs**: dense A->B optical flow field
