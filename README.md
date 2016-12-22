@@ -16,7 +16,7 @@ Installation Instructions
 1. Create a python (2.7) virtualenv, by typing: `virtualenv --no-site-packages env`
 2. activate the virtualenv, by typing `source env/bin/activate`
 2. Clone this repository by typing: `git clone https://github.com/shayzweig/InterpoNet`
-3. Install all following python packages (using `pip install`) : numpy (tested version: 1.11.2), scikit-image (tested version: 0.12.3). 
+3. Install all following python packages (using `pip install`) : numpy (tested version: 1.11.2), scikit-image (tested version: 0.12.3). (other dependencies such as cython might be required)
 4. install tensorflow according to the instructions in their [website](https://www.tensorflow.org/versions/r0.10/get_started/os_setup)  . We only tested our program using tensorflow 0.10.0, and 0.11.0, it should work for versions >0.10.0 
 4. Make sure to configure tensorflow to your needs (GPU usage preferred, you will need specific versions of cuda and cudnn for that)
 5. Install the variational inference program:
