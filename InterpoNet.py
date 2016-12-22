@@ -6,6 +6,7 @@ import io_utils
 import model
 import argparse
 
+# Parsing the parameters
 parser = argparse.ArgumentParser(description='Interponet inference')
 parser.add_argument('img1_filename', type=str, help='First image filename in the image pair')
 parser.add_argument('img2_filename', type=str, help='Second image filename in the image pair')
@@ -34,25 +35,6 @@ if args.sintel:
     if args.model_filename is None:
         args.model_filename = 'models/ff_sintel.ckpt'
 
-
-
-
-# class  dummy():
-#     pass
-# args = dummy()
-# args.img1_filename = 'example/frame_0001.png'
-# args.img2_filename = 'example/frame_0002.png'
-# args.edges_filename = 'example/frame_0001.dat'
-# args.matches_filename = 'example/frame_0001.txt'
-# args.ba_matches_filename = 'example/frame_0001_BA.txt'
-#
-# args.out_filename = 'example/output.flo'
-# args.model_filename = 'models/ff_sintel.ckpt'
-# args.img_width = 1024
-# args.img_height = 436
-# args.downscale = 8
-
-
 # Load edges file
 print "Loading files..."
 edges = io_utils.load_edges_file(args.edges_filename, width=args.img_width, height=args.img_height)
@@ -60,12 +42,16 @@ edges = io_utils.load_edges_file(args.edges_filename, width=args.img_width, heig
 # Load matching file
 img, mask = io_utils.load_matching_file(args.matches_filename, width=args.img_width, height=args.img_height)
 
-if args.ba_matches_filename is not None:
-    img_ba, mask_ba = io_utils.load_matching_file(args.ba_matches_filename, width=args.img_width, height=args.img_height)
-    img, mask =  utils.create_mean_map_ab_ba(img, mask, img_ba, mask_ba, args.downscale)
 # downscale
 print "Downscaling..."
 img, mask, edges = utils.downscale_all(img, mask, edges, args.downscale)
+
+if args.ba_matches_filename is not None:
+    img_ba, mask_ba = io_utils.load_matching_file(args.ba_matches_filename, width=args.img_width, height=args.img_height)
+
+    img_ba, mask_ba, _ = utils.downscale_all(img_ba, mask_ba, None, args.downscale)
+    img, mask =  utils.create_mean_map_ab_ba(img, mask, img_ba, mask_ba, args.downscale)
+
 
 with tf.device('/gpu:0'):
     with tf.Graph().as_default():
@@ -91,7 +77,7 @@ with tf.device('/gpu:0'):
         print "Upscaling..."
         upscaled_pred = sk.transform.resize(prediction[0],[args.img_height,args.img_width, 2], preserve_range=True, order=3)
 
-        io_utils.save_flow_file(upscaled_pred, filename='tmp.flo')
+        io_utils.save_flow_file(upscaled_pred, filename='out_no_var.flo')
 
         print "Variational post Processing..."
-        utils.calc_variational_inference_map(args.img1_filename, args.img2_filename, 'tmp.flo', args.out_filename, 'sintel')
+        utils.calc_variational_inference_map(args.img1_filename, args.img2_filename, 'out_no_var.flo', args.out_filename, 'sintel')

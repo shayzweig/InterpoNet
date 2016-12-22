@@ -26,8 +26,9 @@ def downscale_all(img, mask, edges, downscale):
     mask = mask[:, :, 0]
     img[np.isnan(img)] = 0
 
-    edges = edges[:(edges.shape[0] - (edges.shape[0] % downscale)), :(edges.shape[1] - (edges.shape[1] % downscale))]
-    edges = rescale(edges, 1 / float(downscale), preserve_range=True)
+    if edges is not None:
+        edges = edges[:(edges.shape[0] - (edges.shape[0] % downscale)), :(edges.shape[1] - (edges.shape[1] % downscale))]
+        edges = rescale(edges, 1 / float(downscale), preserve_range=True)
 
     return img, mask, edges
 

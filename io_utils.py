@@ -2,6 +2,53 @@ import numpy as np
 import os
 import struct
 
+def load_flow_file(filename):
+    TAG_FLOAT = 202021.25;  # check for this when READING the file
+
+    # sanity check
+    if filename == '':
+        print ('readFlowFile: empty filename')
+        return
+
+    idx = filename.rfind('.')
+
+    if idx == -1:
+        print ('readFlowFile: extension required in filename %s' % filename)
+        return
+
+
+    if filename[idx:] != '.flo':
+        print ('readFlowFile: filename %s should have extension ''.flo''' % filename)
+        return
+
+    with open(filename, 'rb') as f:
+        tag = np.fromfile(f, np.float32, count=1)
+        width = np.fromfile(f, np.int32, count=1)
+        height = np.fromfile(f, np.int32, count=1)
+
+        # sanity check
+
+        if tag != TAG_FLOAT :
+            print ('readFlowFile(%(filename)s): wrong tag (possibly due to big-endian machine?)' % {"filename":filename});
+            return
+
+        if width < 1 or width > 99999:
+            print ('readFlowFile(%s): illegal width %d' % (filename,width))
+            return
+
+        if height < 1 or height > 99999:
+            print ('readFlowFile(%s): illegal height %d' % (filename, height))
+            return
+
+        nBands = 2
+
+        # arrange into matrix form
+        data = np.fromfile(f, np.float32, count=nBands*width*height)
+        # Reshape data into 3D array (columns, rows, bands)
+        data2D = np.resize(data, (height, width, 2))
+
+        return data2D
+
 def save_flow_file(flow, filename):
     TAG_STRING = 'PIEH'
     # sanity check
