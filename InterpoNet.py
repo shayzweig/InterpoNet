@@ -49,6 +49,7 @@ img, mask, edges = utils.downscale_all(img, mask, edges, args.downscale)
 if args.ba_matches_filename is not None:
     img_ba, mask_ba = io_utils.load_matching_file(args.ba_matches_filename, width=args.img_width, height=args.img_height)
 
+    # downscale ba
     img_ba, mask_ba, _ = utils.downscale_all(img_ba, mask_ba, None, args.downscale)
     img, mask =  utils.create_mean_map_ab_ba(img, mask, img_ba, mask_ba, args.downscale)
 
