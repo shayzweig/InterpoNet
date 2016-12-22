@@ -24,7 +24,7 @@ Installation Instructions
   2. from the root folder of Interponet, type: `cd SrcVariational`
   3. type: `make` - the comilation should run without errors.
 
-Test you installation by running the following command:
+Test your installation by running the following command from the root folder of InterpoNet:
 `python InterpoNet.py example/frame_0001.png example/frame_0002.png example/frame_0001.dat example/frame_0001.txt example/frame_0001.flo --ba_matches_filename=example/frame_0001_BA.txt --sintel`  
 No errors should be displayed
 
