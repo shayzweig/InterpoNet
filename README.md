@@ -1,5 +1,3 @@
-** still a work in progress, we will upload the training code in the following weeks **  
-
 # InterpoNet - A brain inspired neural network for optical flow dense interpolation
 ====================================================
 This is an initial commit implementing **InterpoNet, A brain inspired neural network for optical flow dense interpolation** by Shay Zweig and Lior Wolf from Tel Aviv University [(link)](https://arxiv.org/abs/1611.09803)  
